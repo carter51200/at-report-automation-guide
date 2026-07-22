@@ -637,14 +637,15 @@
             <div class="step-number">5</div>
             <div>
               <h3>허용된 AI에 붙여넣고 답변 전체를 복사합니다</h3>
-              <p>기관에서 사용이 허용된 AI 대화창에 그대로 붙여넣고 답변을 기다립니다. 답변이 나오면 첫 줄 <code>---</code>부터 마지막 줄까지 모두 복사하세요.</p>
+              <p>기관에서 사용이 허용된 AI 대화창에 그대로 붙여넣고 답변을 기다립니다. 답변은 <strong>하나의 Markdown 코드 상자</strong>로 나옵니다. 코드 상자 오른쪽 위의 <strong>복사</strong> 버튼을 눌러 전체를 복사하세요.</p>
               <ul>
-                <li><code>---</code>, <code>#</code>, <code>##</code>, <code>**</code> 기호를 지우지 않습니다.</li>
+                <li>코드 상자 안에서 <code>---</code>, <code>#</code>, <code>##</code>, <code>**</code> 기호가 글자 그대로 보이는 것이 정상입니다.</li>
+                <li>바깥의 <code>```markdown</code>과 마지막 <code>```</code>까지 함께 복사해도 앱이 자동으로 제거합니다.</li>
                 <li>AI가 작성한 설명문이 앞뒤에 붙어도 대부분 자동 정리됩니다.</li>
                 <li>내용이 부족하면 AI가 근거 범위에서 배경·절차·효과를 구체적으로 채울 수 있습니다.</li>
                 <li>근거 없는 날짜·금액·인원은 만들지 않고 <code>[확인 필요]</code>로 남겨야 합니다.</li>
               </ul>
-              <div class="result-line">정상 기준: AI 답변에 문서 제목과 여러 개의 “## 섹션명”이 보임</div>
+              <div class="result-line">정상 기준: 코드 상자 안에 <code>---</code>, <code># 제목</code>, 여러 개의 <code>## 섹션명</code>이 글자 그대로 보임</div>
             </div>
           </section>
 
@@ -672,7 +673,7 @@
       <article id="ai-rules" class="section search-block">
         <p class="section-kicker">AI 답변 가져오기</p>
         <h2>기호를 그대로 유지해야 서식이 정확합니다</h2>
-        <p class="lead">사용자가 Markdown을 배울 필요는 없습니다. 다만 AI 답변의 기호를 지우지 말고 전체를 복사하세요.</p>
+        <p class="lead">사용자가 Markdown을 배울 필요는 없습니다. AI 답변의 코드 상자에서 복사 버튼만 누르면 원문 기호까지 정확히 가져올 수 있습니다.</p>
         <div class="cards-2">
           <div class="info-card">
             <div class="icon">✓</div>
@@ -697,12 +698,12 @@
         </div>
         <div class="callout">
           <strong>앱이 자동으로 고치는 것</strong>
-          <p>답변 앞뒤의 짧은 설명, 단일 Markdown 코드 구분선, <code>#제목</code>처럼 빠진 공백, 굵게 표시된 섹션명 등은 의미가 바뀌지 않는 범위에서 정리합니다. 필수 섹션의 누락·추가·순서 변경은 안전을 위해 가져오기를 멈춥니다.</p>
+          <p>답변 전체를 감싼 Markdown 코드 구분선은 정상 형식이며 앱이 자동으로 제거합니다. 앞뒤의 짧은 설명, <code>#제목</code>처럼 빠진 공백, 굵게 표시한 섹션명 등도 의미가 바뀌지 않는 범위에서 정리합니다. 필수 섹션의 누락·추가·순서 변경은 안전을 위해 가져오기를 멈춥니다.</p>
         </div>
         <details>
           <summary>AI 답변이 계속 형식 오류로 막히면?</summary>
           <div>
-            <p>AI에게 “처음 전달한 문서 뼈대의 <code>---</code>, <code>#</code>, <code>##</code>, 섹션명과 순서를 한 글자도 바꾸지 말고 Markdown 본문만 다시 출력해 줘”라고 요청한 뒤 새 답변 전체를 복사하세요.</p>
+            <p>AI에게 “답변 전체를 Markdown 코드 상자 하나에 넣고, 그 안의 <code>---</code>, <code>#</code>, <code>##</code>, 섹션명과 순서를 한 글자도 바꾸지 말아 줘”라고 요청한 뒤 코드 상자의 복사 버튼을 누르세요.</p>
           </div>
         </details>
         <details>
@@ -779,7 +780,7 @@
         </details>
         <details>
           <summary>AI 결과를 가져오지 못합니다</summary>
-          <div><p>AI의 답변 전체를 다시 복사하세요. 필수 <code>##</code> 섹션의 이름과 순서가 최초 전달문과 같은지 확인합니다. 답변 앞뒤 설명이나 코드 구분선은 대체로 자동 정리되지만 섹션 누락은 자동으로 만들지 않습니다.</p></div>
+          <div><p>AI 답변의 Markdown 코드 상자 오른쪽 위 <strong>복사</strong> 버튼으로 전체를 다시 복사하세요. 필수 <code>##</code> 섹션의 이름과 순서가 최초 전달문과 같은지 확인합니다. 바깥 코드 구분선은 자동 제거되지만 섹션 누락은 자동으로 만들지 않습니다.</p></div>
         </details>
         <details>
           <summary>“근거에 없는 새 수치” 경고가 나옵니다</summary>
