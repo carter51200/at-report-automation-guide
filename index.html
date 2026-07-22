@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="처음 사용하는 사람을 위한 aT 보고서 자동화 오프라인 사용 설명서">
+  <title>aT 보고서 자동화 · 처음 사용 가이드</title>
+  <style>
+    :root {
+      --navy: #123b55;
+      --navy-deep: #0b2d42;
+      --blue: #006ead;
+      --blue-dark: #005a8e;
+      --blue-soft: #e7f3f9;
+      --green: #2b8a57;
+      --green-soft: #e4f5eb;
+      --orange: #a95c00;
+      --orange-soft: #fff3df;
+      --red: #b33a3a;
+      --red-soft: #fff0f0;
+      --ink: #17232d;
+      --muted: #5e6f7b;
+      --line: #d8e1e7;
+      --surface: #ffffff;
+      --canvas: #f3f6f8;
+      --shadow: 0 16px 40px rgba(20, 59, 83, .09);
+      --radius: 18px;
+      --content: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 94px; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--canvas);
+      font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "맑은 고딕", sans-serif;
+      font-size: 16px;
+      line-height: 1.72;
+      word-break: keep-all;
+    }
+    button, input { font: inherit; }
+    a { color: var(--blue-dark); }
+    a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+      outline: 3px solid #65bce8;
+      outline-offset: 3px;
+    }
+    .skip-link {
+      position: fixed;
+      z-index: 999;
+      top: 8px;
+      left: 8px;
+      padding: 10px 14px;
+      color: white;
+      background: var(--navy-deep);
+      border-radius: 8px;
+      transform: translateY(-150%);
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    .topbar {
+      position: sticky;
+      z-index: 100;
+      top: 0;
+      color: white;
+      background: rgba(18, 59, 85, .97);
+      border-bottom: 1px solid rgba(255, 255, 255, .12);
+      backdrop-filter: blur(12px);
+    }
+    .topbar-inner {
+      width: min(calc(100% - 32px), var(--content));
+      min-height: 72px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      text-decoration: none;
+      white-space: nowrap;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+    .brand-mark {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      color: #7bc143;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 11px;
+      font-size: 20px;
+    }
+    .topnav {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .topnav a {
+      padding: 8px 10px;
+      color: #e8f4fa;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .topnav a:hover { background: rgba(255, 255, 255, .1); }
+    .offline-badge {
+      padding: 7px 10px;
+      color: #c7f2d8;
+      background: rgba(43, 138, 87, .22);
+      border: 1px solid rgba(143, 221, 174, .2);
+      border-radius: 999px;
+      white-space: nowrap;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      color: white;
+      background:
+        radial-gradient(circle at 78% 16%, rgba(54, 163, 214, .34), transparent 31%),
+        linear-gradient(135deg, var(--navy-deep), var(--navy) 55%, #125477);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -100px;
+      bottom: -160px;
+      width: 430px;
+      height: 430px;
+      border: 60px solid rgba(123, 193, 67, .08);
+      border-radius: 50%;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      width: min(calc(100% - 32px), var(--content));
+      margin: 0 auto;
+      padding: 74px 0 68px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(320px, .85fr);
+      gap: 58px;
+      align-items: center;
+    }
+    .eyebrow {
+      margin: 0 0 12px;
+      color: #a8dbf3;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      margin-bottom: 20px;
+      font-size: clamp(38px, 5.4vw, 64px);
+      line-height: 1.16;
+      letter-spacing: -.045em;
+    }
+    .hero-lead {
+      max-width: 690px;
+      margin-bottom: 28px;
+      color: #e7f3f8;
+      font-size: clamp(17px, 2.2vw, 21px);
+      line-height: 1.66;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .button {
+      display: inline-flex;
+      min-height: 46px;
+      padding: 10px 17px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 800;
+    }
+    .button.primary { color: white; background: var(--blue); }
+    .button.primary:hover { background: #087ebc; }
+    .button.white { color: var(--navy); background: white; }
+    .button.ghost { color: var(--blue-dark); background: white; border-color: var(--line); }
+    .button.small { min-height: 38px; padding: 7px 12px; font-size: 13px; }
+
+    .start-card {
+      padding: 24px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, .97);
+      border: 1px solid rgba(255, 255, 255, .46);
+      border-radius: var(--radius);
+      box-shadow: 0 24px 65px rgba(2, 28, 44, .25);
+    }
+    .start-card h2 { margin-bottom: 5px; font-size: 20px; letter-spacing: -.02em; }
+    .start-card > p { margin-bottom: 18px; color: var(--muted); font-size: 14px; }
+    .check-list { display: grid; gap: 11px; }
+    .check-row {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 10px;
+      background: #f7fafb;
+      border: 1px solid #e5ecef;
+      border-radius: 10px;
+    }
+    .check-row input { width: 19px; height: 19px; margin-top: 3px; accent-color: var(--green); }
+    .check-row strong { display: block; font-size: 14px; }
+    .check-row small { display: block; color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .progress-track { height: 8px; margin-top: 18px; overflow: hidden; background: #e8eef1; border-radius: 999px; }
+    .progress-fill { width: 0; height: 100%; background: linear-gradient(90deg, var(--green), #7bc143); transition: width .25s ease; }
+    .progress-caption { margin: 7px 0 0; color: var(--muted); text-align: right; font-size: 12px; font-weight: 700; }
+
+    .page-shell {
+      width: min(calc(100% - 32px), var(--content));
+      margin: 0 auto;
+      padding: 48px 0 100px;
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 34px;
+      align-items: start;
+    }
+    .side {
+      position: sticky;
+      top: 94px;
+      display: grid;
+      gap: 14px;
+    }
+    .side-card {
+      padding: 16px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+    .side-title { margin: 0 0 9px; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .06em; }
+    .side-nav { display: grid; gap: 2px; }
+    .side-nav a {
+      padding: 8px 9px;
+      color: var(--ink);
+      border-radius: 7px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .side-nav a:hover { color: var(--blue); background: var(--blue-soft); }
+    .search-wrap { position: relative; }
+    .search-wrap::before { content: "⌕"; position: absolute; top: 7px; left: 10px; color: var(--muted); font-size: 18px; }
+    #guide-search {
+      width: 100%;
+      min-height: 41px;
+      padding: 8px 9px 8px 34px;
+      color: var(--ink);
+      background: #fbfcfd;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+    }
+    #search-status { min-height: 20px; margin: 6px 0 0; color: var(--muted); font-size: 11px; }
+    .reset-button { width: 100%; color: var(--muted); background: transparent; border: 0; cursor: pointer; font-size: 12px; text-decoration: underline; }
+
+    main { min-width: 0; }
+    .search-empty {
+      display: none;
+      margin-bottom: 24px;
+      padding: 22px;
+      color: var(--muted);
+      background: white;
+      border: 1px dashed #b8c7d0;
+      border-radius: 14px;
+      text-align: center;
+    }
+    .search-block { scroll-margin-top: 94px; }
+    .search-block[hidden] { display: none !important; }
+    .section { margin-bottom: 26px; padding: 34px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .section-kicker { margin: 0 0 7px; color: var(--blue); font-size: 13px; font-weight: 900; letter-spacing: .04em; }
+    h2 { margin-bottom: 12px; font-size: clamp(25px, 3.1vw, 34px); line-height: 1.3; letter-spacing: -.035em; }
+    h3 { margin-bottom: 9px; font-size: 19px; line-height: 1.45; letter-spacing: -.02em; }
+    .lead { margin-bottom: 24px; color: var(--muted); font-size: 17px; }
+    .muted { color: var(--muted); }
+    .no-margin { margin: 0; }
+    .mini { font-size: 13px; }
+    code, kbd {
+      padding: .15em .38em;
+      color: #164c6a;
+      background: #edf4f7;
+      border: 1px solid #dce9ef;
+      border-radius: 5px;
+      font-family: Consolas, "D2Coding", monospace;
+      font-size: .92em;
+    }
+    kbd { color: var(--ink); background: white; box-shadow: 0 2px 0 #c8d2d8; }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+    .flow-card { position: relative; padding: 17px 13px; background: #f7fafb; border: 1px solid #e3eaee; border-radius: 12px; }
+    .flow-card:not(:last-child)::after { content: "›"; position: absolute; z-index: 2; top: 38%; right: -10px; color: #8ca0ad; font-size: 24px; font-weight: 700; }
+    .flow-number { display: inline-grid; width: 28px; height: 28px; margin-bottom: 10px; place-items: center; color: white; background: var(--blue); border-radius: 50%; font-size: 12px; font-weight: 900; }
+    .flow-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+    .flow-card span { display: block; color: var(--muted); font-size: 12px; line-height: 1.55; }
+
+    .callout { margin: 18px 0; padding: 16px 18px; border-left: 5px solid var(--blue); background: var(--blue-soft); border-radius: 0 10px 10px 0; }
+    .callout.success { border-left-color: var(--green); background: var(--green-soft); }
+    .callout.warning { border-left-color: #e99525; background: var(--orange-soft); }
+    .callout.danger { border-left-color: var(--red); background: var(--red-soft); }
+    .callout strong { display: block; margin-bottom: 3px; }
+    .callout p { margin: 0; }
+
+    .cards-2, .cards-3 { display: grid; gap: 14px; }
+    .cards-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cards-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .info-card { padding: 20px; background: #f9fbfc; border: 1px solid #e2eaee; border-radius: 13px; }
+    .info-card .icon { display: grid; width: 40px; height: 40px; margin-bottom: 12px; place-items: center; color: var(--blue-dark); background: var(--blue-soft); border-radius: 11px; font-size: 21px; }
+    .info-card p:last-child { margin-bottom: 0; }
+    .good { color: var(--green); font-weight: 800; }
+    .bad { color: var(--red); font-weight: 800; }
+
+    .app-map {
+      overflow: hidden;
+      margin-top: 20px;
+      background: #edf2f5;
+      border: 1px solid #bfcdd5;
+      border-radius: 15px;
+      box-shadow: 0 14px 30px rgba(20, 59, 83, .12);
+    }
+    .app-header { display: flex; padding: 15px 18px; align-items: center; gap: 10px; color: white; background: var(--navy); }
+    .app-header .at { color: #7bc143; font-size: 19px; font-weight: 900; }
+    .app-header strong { font-size: 15px; }
+    .app-header em { margin-left: auto; padding: 5px 8px; color: #d7f3e3; background: rgba(43, 138, 87, .3); border-radius: 6px; font-size: 10px; font-style: normal; }
+    .app-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 11px 14px; background: white; border-bottom: 1px solid var(--line); }
+    .app-steps span { padding: 7px; color: var(--muted); background: #f3f6f8; border-radius: 6px; text-align: center; font-size: 10px; font-weight: 800; }
+    .app-steps span:first-child { color: white; background: var(--blue); }
+    .app-body { display: grid; grid-template-columns: .9fr 1.1fr; gap: 12px; padding: 14px; }
+    .app-column { display: grid; gap: 10px; }
+    .app-panel { position: relative; padding: 13px; background: white; border: 1px solid var(--line); border-radius: 9px; }
+    .app-panel b { display: block; margin-bottom: 8px; font-size: 11px; }
+    .fake-field { height: 24px; margin: 5px 0; background: #f5f8fa; border: 1px solid #d8e1e7; border-radius: 5px; }
+    .fake-button { display: inline-block; margin-top: 6px; padding: 6px 8px; color: white; background: var(--blue); border-radius: 5px; font-size: 9px; font-weight: 800; }
+    .fake-button.green { background: var(--green); }
+    .fake-button.light { color: var(--blue-dark); background: var(--blue-soft); }
+    .fake-preview { height: 160px; padding: 13px; color: #5b6d78; background: #fbfcfd; border: 1px solid var(--line); border-radius: 6px; font-family: Consolas, monospace; font-size: 9px; line-height: 1.8; }
+    .map-dot { position: absolute; top: -10px; right: -8px; display: grid; width: 25px; height: 25px; place-items: center; color: white; background: #e67518; border: 3px solid white; border-radius: 50%; box-shadow: 0 3px 7px rgba(0, 0, 0, .15); font-size: 10px; font-weight: 900; }
+    .legend { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+    .legend div { padding: 9px; color: var(--muted); background: #f7fafb; border-radius: 8px; font-size: 11px; line-height: 1.55; }
+    .legend b { display: inline-grid; width: 20px; height: 20px; margin-right: 4px; place-items: center; color: white; background: #e67518; border-radius: 50%; }
+
+    .steps { display: grid; gap: 18px; }
+    .step { display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 16px; padding: 22px; background: #fafcfd; border: 1px solid #e1e9ed; border-radius: 14px; }
+    .step-number { display: grid; width: 46px; height: 46px; place-items: center; color: white; background: linear-gradient(145deg, var(--blue), #1689c2); border-radius: 13px; font-size: 18px; font-weight: 900; }
+    .step h3 { margin: 0 0 7px; }
+    .step p:last-child, .step ul:last-child { margin-bottom: 0; }
+    .result-line { margin-top: 11px; padding: 9px 12px; color: #276945; background: var(--green-soft); border-radius: 8px; font-size: 13px; font-weight: 800; }
+    .click-label { display: inline-block; padding: 3px 8px; color: var(--blue-dark); background: var(--blue-soft); border-radius: 6px; font-size: 13px; font-weight: 800; }
+
+    .sample-box { margin-top: 14px; padding: 16px; background: #102f42; border-radius: 12px; }
+    .sample-box pre { margin: 0; overflow: auto; color: #eef8fc; white-space: pre-wrap; font-family: Consolas, "D2Coding", monospace; font-size: 13px; line-height: 1.65; word-break: break-all; }
+    .sample-actions { display: flex; margin-top: 11px; align-items: center; gap: 10px; }
+    .copy-feedback { color: #b7e5c8; font-size: 12px; }
+
+    .compare { width: 100%; border-collapse: separate; border-spacing: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; }
+    .compare th, .compare td { padding: 13px 15px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    .compare th { color: var(--navy); background: #eef4f7; font-size: 13px; }
+    .compare td { background: white; font-size: 14px; }
+    .compare tr:last-child td { border-bottom: 0; }
+    .compare th:last-child, .compare td:last-child { border-right: 0; }
+    .compare td:first-child { font-weight: 800; }
+
+    details { margin-top: 10px; overflow: hidden; background: #fafcfd; border: 1px solid #e1e8ec; border-radius: 11px; }
+    summary { padding: 14px 16px; cursor: pointer; font-weight: 800; }
+    details > div { padding: 0 16px 16px; color: var(--muted); }
+    details p:last-child { margin-bottom: 0; }
+    ul, ol { padding-left: 1.35em; }
+    li + li { margin-top: 6px; }
+
+    .shortcut-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .shortcut { display: flex; padding: 10px 12px; align-items: center; justify-content: space-between; gap: 12px; background: #f8fafb; border: 1px solid #e4ebef; border-radius: 9px; font-size: 13px; }
+    .shortcut span { color: var(--muted); }
+
+    .footer { padding: 36px 16px; color: #d4e6ef; background: var(--navy-deep); text-align: center; }
+    .footer strong { color: white; }
+    .footer p { margin: 5px 0; font-size: 13px; }
+    .to-top { position: fixed; z-index: 50; right: 22px; bottom: 22px; display: grid; width: 44px; height: 44px; place-items: center; color: white; background: var(--navy); border: 0; border-radius: 50%; box-shadow: 0 8px 25px rgba(11, 45, 66, .28); cursor: pointer; }
+
+    @media (max-width: 980px) {
+      .topnav { display: none; }
+      .hero-inner { grid-template-columns: 1fr; gap: 30px; }
+      .start-card { max-width: 680px; }
+      .page-shell { grid-template-columns: 1fr; }
+      .side { position: static; grid-template-columns: 1fr 1fr; }
+      .side-nav { grid-template-columns: repeat(4, 1fr); }
+      .flow { grid-template-columns: repeat(3, 1fr); }
+      .flow-card::after { display: none; }
+    }
+    @media (max-width: 680px) {
+      body { word-break: normal; }
+      .topbar-inner { min-height: 64px; }
+      .brand { font-size: 16px; }
+      .offline-badge { display: none; }
+      .hero-inner { padding: 50px 0; }
+      h1 { font-size: 38px; }
+      .page-shell { padding-top: 26px; }
+      .side { grid-template-columns: 1fr; }
+      .side-card:first-child { display: none; }
+      .section { padding: 24px 19px; border-radius: 14px; }
+      .flow, .cards-2, .cards-3, .legend, .shortcut-grid { grid-template-columns: 1fr; }
+      .app-body { grid-template-columns: 1fr; }
+      .step { grid-template-columns: 40px minmax(0, 1fr); padding: 18px 15px; gap: 12px; }
+      .step-number { width: 38px; height: 38px; border-radius: 10px; font-size: 15px; }
+      .compare { display: block; overflow-x: auto; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+    @media print {
+      .topbar, .side, .hero-actions, .sample-actions, .to-top { display: none !important; }
+      body { color: black; background: white; font-size: 11pt; }
+      .hero { color: black; background: white; }
+      .hero-inner { display: block; padding: 18px 0; }
+      .hero-lead, .eyebrow { color: #333; }
+      .start-card { display: none; }
+      .page-shell { display: block; width: 100%; padding: 0; }
+      .section { break-inside: avoid; box-shadow: none; margin: 0 0 14px; padding: 20px; }
+      a { color: black; text-decoration: none; }
+      details > div { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 바로가기</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#top" aria-label="설명서 처음으로">
+        <span class="brand-mark">aT</span>
+        <span>보고서 자동화</span>
+      </a>
+      <nav class="topnav" aria-label="빠른 목차">
+        <a href="#quick-start">빠른 시작</a>
+        <a href="#full-guide">따라 하기</a>
+        <a href="#hwp-live">한글 실시간 작성</a>
+        <a href="#troubleshooting">문제 해결</a>
+      </nav>
+      <span class="offline-badge">● API 없음 · 자동 전송 없음</span>
+    </div>
+  </header>
+
+  <div id="top" class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">처음 사용하는 분을 위한 오프라인 설명서</p>
+        <h1>자료만 준비하면<br>보고서가 완성됩니다</h1>
+        <p class="hero-lead">보고서 종류를 고르고, 근거자료를 넣고, AI 답변을 다시 붙여넣으세요. 앱이 내용 구조를 검사한 뒤 aT 기준 한글 서식으로 작성합니다.</p>
+        <div class="hero-actions">
+          <a class="button white" href="#quick-start">5분 빠른 시작</a>
+          <a class="button primary" href="#full-guide">처음부터 따라 하기</a>
+        </div>
+      </div>
+      <aside class="start-card" aria-label="시작 전 확인">
+        <h2>시작 전 3가지만 확인하세요</h2>
+        <p>체크 상태는 이 브라우저에만 저장됩니다.</p>
+        <div class="check-list">
+          <label class="check-row">
+            <input class="step-check" type="checkbox" data-check="windows">
+            <span><strong>Windows 10 또는 11</strong><small>이 프로그램은 Windows용입니다.</small></span>
+          </label>
+          <label class="check-row">
+            <input class="step-check" type="checkbox" data-check="hancom">
+            <span><strong>한컴오피스 한글 설치</strong><small>HWP/HWPX 생성과 실시간 작성에 필요합니다.</small></span>
+          </label>
+          <label class="check-row">
+            <input class="step-check" type="checkbox" data-check="policy">
+            <span><strong>외부 AI 사용 가능 여부 확인</strong><small>기관 정책상 허용된 AI에만 자료를 붙여넣으세요.</small></span>
+          </label>
+        </div>
+        <div class="progress-track" aria-hidden="true"><div id="progress-fill" class="progress-fill"></div></div>
+        <p id="progress-caption" class="progress-caption">준비 0 / 3</p>
+      </aside>
+    </div>
+  </div>
+
+  <div class="page-shell">
+    <aside class="side" aria-label="설명서 도구">
+      <div class="side-card">
+        <p class="side-title">설명서 목차</p>
+        <nav class="side-nav">
+          <a href="#quick-start">한눈에 보기</a>
+          <a href="#screen-map">화면 읽는 법</a>
+          <a href="#full-guide">처음부터 따라 하기</a>
+          <a href="#ai-rules">AI 답변 규칙</a>
+          <a href="#hwp-live">한글 작성 방식</a>
+          <a href="#quick-tools">빠른도구</a>
+          <a href="#troubleshooting">문제 해결</a>
+          <a href="#final-check">최종 확인</a>
+        </nav>
+      </div>
+      <div class="side-card">
+        <p class="side-title">내용 검색</p>
+        <div class="search-wrap">
+          <input id="guide-search" type="search" placeholder="예: PDF, 되돌리기" autocomplete="off" aria-label="설명서 검색">
+        </div>
+        <p id="search-status" aria-live="polite"></p>
+        <button id="reset-progress" class="reset-button" type="button">시작 전 체크 초기화</button>
+      </div>
+    </aside>
+
+    <main id="main">
+      <p id="search-empty" class="search-empty">해당 내용이 없습니다. 다른 단어로 검색해 보세요.</p>
+
+      <article id="quick-start" class="section search-block">
+        <p class="section-kicker">5분 빠른 시작</p>
+        <h2>이 순서만 기억하면 됩니다</h2>
+        <p class="lead">앱이 AI에 자동 접속하지 않습니다. 복사와 붙여넣기만 사용자가 직접 합니다.</p>
+        <div class="flow" aria-label="전체 사용 흐름">
+          <div class="flow-card"><span class="flow-number">1</span><strong>문서 선택</strong><span>유형·제목·한글 서식</span></div>
+          <div class="flow-card"><span class="flow-number">2</span><strong>자료 넣기</strong><span>파일 또는 필수 사실 메모</span></div>
+          <div class="flow-card"><span class="flow-number">3</span><strong>AI에 복사</strong><span>전달문 전체를 직접 붙여넣기</span></div>
+          <div class="flow-card"><span class="flow-number">4</span><strong>답변 가져오기</strong><span>AI 결과를 검사해 초안으로</span></div>
+          <div class="flow-card"><span class="flow-number">5</span><strong>한글 작성</strong><span>열린 문서 또는 새 파일</span></div>
+        </div>
+        <div class="callout success">
+          <strong>가장 빠른 경로</strong>
+          <p><span class="click-label">1 AI에 보낼 내용 준비</span> → <strong>전체 복사</strong> → AI에 붙여넣기 → AI 답변 전체 복사 → <span class="click-label">2 AI 결과 붙여넣기</span></p>
+        </div>
+      </article>
+
+      <article id="screen-map" class="section search-block">
+        <p class="section-kicker">화면 읽는 법</p>
+        <h2>왼쪽에서 준비하고, 오른쪽에서 검토합니다</h2>
+        <p class="lead">앱 화면은 작업 순서대로 번호가 붙어 있습니다. 아래 그림의 주황색 번호만 따라가세요.</p>
+        <div class="app-map" role="img" aria-label="aT 보고서 자동화 화면 구성 모식도">
+          <div class="app-header"><span class="at">aT</span><strong>보고서 자동화</strong><em>API 연결 없음 · 자동 전송 없음</em></div>
+          <div class="app-steps"><span>01 문서 설정</span><span>02 자료 준비</span><span>03 초안 작성</span><span>04 검토·저장</span></div>
+          <div class="app-body">
+            <div class="app-column">
+              <div class="app-panel"><span class="map-dot">1</span><b>01 문서 설정</b><div class="fake-field"></div><div class="fake-field"></div><div class="fake-field"></div></div>
+              <div class="app-panel"><span class="map-dot">2</span><b>02 근거자료와 필수 사실</b><div class="fake-field"></div><div class="fake-field" style="height:48px"></div><span class="fake-button light">파일 추가</span></div>
+              <div class="app-panel"><span class="map-dot">3</span><b>03 AI로 초안 만들기</b><span class="fake-button">1 AI에 보낼 내용 준비</span> <span class="fake-button green">2 AI 결과 붙여넣기</span></div>
+            </div>
+            <div class="app-column">
+              <div class="app-panel"><span class="map-dot">4</span><b>초안 검토</b><div class="fake-preview">---<br>report_type: work_plan<br>---<br># 문서 제목<br><br>## 추진 배경<br>○ 본문 내용</div></div>
+              <div class="app-panel"><span class="map-dot">5</span><b>한글로 내보내기</b><span class="fake-button green">열린 한글에 실시간 작성</span> <span class="fake-button">새 HWP/HWPX + PDF 만들기</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="legend">
+          <div><b>1</b> 만들 문서와 실제 한글 서식을 고릅니다.</div>
+          <div><b>2</b> 자료 파일과 반드시 들어갈 사실을 넣습니다.</div>
+          <div><b>3</b> AI 전달문과 답변을 수동으로 교환합니다.</div>
+          <div><b>4</b> 초안을 직접 고친 뒤 <b>5</b> 한글로 작성합니다.</div>
+        </div>
+        <div class="callout warning">
+          <strong>“보고서 유형”과 “한글 서식”은 다릅니다</strong>
+          <p><strong>보고서 유형</strong>은 들어갈 목차와 내용 구조이고, <strong>한글 서식</strong>은 글꼴·크기·기호·들여쓰기·부분 굵게 같은 화면 모양입니다. 보도자료를 고르면 보도자료 전용 서식이 자동 선택됩니다.</p>
+        </div>
+      </article>
+
+      <article id="full-guide" class="section search-block">
+        <p class="section-kicker">처음부터 따라 하기</p>
+        <h2>실제 문서 하나를 만들어 봅시다</h2>
+        <p class="lead">아래 7단계를 위에서부터 차례대로 진행하세요. 각 단계의 초록색 문장이 정상 완료 기준입니다.</p>
+        <div class="steps">
+          <section class="step">
+            <div class="step-number">1</div>
+            <div>
+              <h3>프로그램을 실행하고 환경을 점검합니다</h3>
+              <p><code>GovReportAutomation.exe</code>를 실행한 뒤 오른쪽 위 <span class="click-label">환경 점검</span>을 누릅니다. Windows가 실행을 막으면 파일 출처와 배포자를 확인한 뒤 조직의 보안 절차에 따르세요.</p>
+              <div class="result-line">정상 기준: “초안 작성: 가능”, “한컴 HWP 자동화: 가능”</div>
+            </div>
+          </section>
+
+          <section class="step">
+            <div class="step-number">2</div>
+            <div>
+              <h3>문서 종류와 한글 모양을 고릅니다</h3>
+              <ol>
+                <li><strong>보고서 유형</strong>: 검토보고, 업무계획, 결과보고, 회의결과, 보도자료 중 하나</li>
+                <li><strong>문서 제목</strong>: 최종 문서에 표시할 제목</li>
+                <li><strong>한글 서식</strong>: aT 다면 보고서 또는 aT 단면 보고서</li>
+              </ol>
+              <p class="mini muted">다면은 여러 항목을 충분히 전개할 때, 단면은 간결한 보고에 적합합니다. 보도자료 서식은 자동 고정됩니다.</p>
+              <div class="result-line">정상 기준: 화면 위 진행 표시에서 “01 문서 설정”이 활성화됨</div>
+            </div>
+          </section>
+
+          <section class="step">
+            <div class="step-number">3</div>
+            <div>
+              <h3>근거자료와 반드시 들어갈 사실을 넣습니다</h3>
+              <p><span class="click-label">파일 추가</span>로 TXT, MD, HWP, HWPX, DOCX 또는 텍스트 PDF를 넣습니다. 빠뜨리면 안 되는 날짜·금액·인원·담당자·결정사항은 메모 칸에 한 줄씩 적으세요.</p>
+              <div class="sample-box">
+                <pre id="sample-note">사업명: 2026년 지역 농식품 판로지원 사업
+추진기간: 2026년 8월 1일 ~ 11월 30일
+지원대상: 지역 농식품 기업 20개사
+주요내용: 온라인 기획전, 상품 컨설팅, 성과 점검
+담당부서: ○○처 ○○부
+확정되지 않은 예산은 [확인 필요]로 표시</pre>
+                <div class="sample-actions">
+                  <button id="copy-sample" class="button small white" type="button">예시 메모 복사</button>
+                  <span id="copy-feedback" class="copy-feedback" aria-live="polite"></span>
+                </div>
+              </div>
+              <div class="callout warning">
+                <strong>스캔한 PDF는 바로 읽을 수 없습니다</strong>
+                <p>마우스로 글자를 선택할 수 없는 PDF는 OCR로 텍스트를 만든 뒤 넣거나, 핵심 사실을 메모 칸에 직접 적으세요.</p>
+              </div>
+              <div class="result-line">정상 기준: “0개 파일”이 실제 개수로 바뀌거나 메모가 입력됨</div>
+            </div>
+          </section>
+
+          <section class="step">
+            <div class="step-number">4</div>
+            <div>
+              <h3>AI에 보낼 내용을 준비합니다</h3>
+              <p><span class="click-label">1 AI에 보낼 내용 준비</span>를 누릅니다. 새 창에서 유형과 자료 개수를 확인한 뒤 <strong>전체 복사</strong>를 누르세요. 지침, 문서 뼈대, 근거자료가 한 번에 복사됩니다.</p>
+              <div class="callout danger">
+                <strong>앱은 자료를 자동 전송하지 않습니다</strong>
+                <p>복사한 내용을 외부 AI에 붙여넣기 전에 개인정보·영업비밀·비공개 정보의 반출 가능 여부를 직접 확인하세요.</p>
+              </div>
+              <div class="result-line">정상 기준: “클립보드에 복사했습니다”라는 상태 메시지가 표시됨</div>
+            </div>
+          </section>
+
+          <section class="step">
+            <div class="step-number">5</div>
+            <div>
+              <h3>허용된 AI에 붙여넣고 답변 전체를 복사합니다</h3>
+              <p>기관에서 사용이 허용된 AI 대화창에 그대로 붙여넣고 답변을 기다립니다. 답변이 나오면 첫 줄 <code>---</code>부터 마지막 줄까지 모두 복사하세요.</p>
+              <ul>
+                <li><code>---</code>, <code>#</code>, <code>##</code>, <code>**</code> 기호를 지우지 않습니다.</li>
+                <li>AI가 작성한 설명문이 앞뒤에 붙어도 대부분 자동 정리됩니다.</li>
+                <li>내용이 부족하면 AI가 근거 범위에서 배경·절차·효과를 구체적으로 채울 수 있습니다.</li>
+                <li>근거 없는 날짜·금액·인원은 만들지 않고 <code>[확인 필요]</code>로 남겨야 합니다.</li>
+              </ul>
+              <div class="result-line">정상 기준: AI 답변에 문서 제목과 여러 개의 “## 섹션명”이 보임</div>
+            </div>
+          </section>
+
+          <section class="step">
+            <div class="step-number">6</div>
+            <div>
+              <h3>AI 답변을 검사하고 초안으로 가져옵니다</h3>
+              <p>앱에서 <span class="click-label">2 AI 결과 붙여넣기</span>를 누른 뒤 <strong>클립보드에서 붙여넣기</strong> → <strong>검사하고 초안으로 가져오기</strong>를 누릅니다.</p>
+              <p>오른쪽 <strong>초안 검토</strong>에서 문장을 직접 고칠 수 있습니다. 노란색으로 표시된 <code>[확인 필요]</code>를 실제 사실로 바꾸고 날짜·수치·담당자를 원자료와 대조하세요.</p>
+              <div class="result-line">정상 기준: 오른쪽에 초안이 보이고 “[확인 필요] n곳”과 섹션 수가 표시됨</div>
+            </div>
+          </section>
+
+          <section class="step">
+            <div class="step-number">7</div>
+            <div>
+              <h3>한글 문서로 작성합니다</h3>
+              <p>기존 문서에 이어 쓰려면 <span class="click-label">열린 한글에 실시간 작성</span>, 별도 문서를 만들려면 <span class="click-label">새 HWP/HWPX + PDF 만들기</span>를 누릅니다. 어떤 방식을 선택할지는 아래 비교표를 확인하세요.</p>
+              <div class="result-line">정상 기준: aT 기준 글꼴·크기·기호·들여쓰기·부분 굵게가 적용된 HWP/HWPX와 검수용 PDF가 만들어짐</div>
+            </div>
+          </section>
+        </div>
+      </article>
+
+      <article id="ai-rules" class="section search-block">
+        <p class="section-kicker">AI 답변 가져오기</p>
+        <h2>기호를 그대로 유지해야 서식이 정확합니다</h2>
+        <p class="lead">사용자가 Markdown을 배울 필요는 없습니다. 다만 AI 답변의 기호를 지우지 말고 전체를 복사하세요.</p>
+        <div class="cards-2">
+          <div class="info-card">
+            <div class="icon">✓</div>
+            <h3 class="good">그대로 두세요</h3>
+            <ul>
+              <li><code>---</code>: 문서 정보의 시작과 끝</li>
+              <li><code># 제목</code>: 문서 제목</li>
+              <li><code>## 섹션명</code>: 필수 목차</li>
+              <li><code>**핵심어**</code>: 한글에서 부분 굵게</li>
+            </ul>
+          </div>
+          <div class="info-card">
+            <div class="icon">!</div>
+            <h3 class="bad">임의로 바꾸지 마세요</h3>
+            <ul>
+              <li>섹션 이름을 비슷한 말로 변경</li>
+              <li>섹션을 빼거나 순서를 바꿈</li>
+              <li>새 섹션을 임의로 추가</li>
+              <li>근거 없는 날짜·금액·인원 작성</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout">
+          <strong>앱이 자동으로 고치는 것</strong>
+          <p>답변 앞뒤의 짧은 설명, 단일 Markdown 코드 구분선, <code>#제목</code>처럼 빠진 공백, 굵게 표시된 섹션명 등은 의미가 바뀌지 않는 범위에서 정리합니다. 필수 섹션의 누락·추가·순서 변경은 안전을 위해 가져오기를 멈춥니다.</p>
+        </div>
+        <details>
+          <summary>AI 답변이 계속 형식 오류로 막히면?</summary>
+          <div>
+            <p>AI에게 “처음 전달한 문서 뼈대의 <code>---</code>, <code>#</code>, <code>##</code>, 섹션명과 순서를 한 글자도 바꾸지 말고 Markdown 본문만 다시 출력해 줘”라고 요청한 뒤 새 답변 전체를 복사하세요.</p>
+          </div>
+        </details>
+        <details>
+          <summary>AI를 사용할 수 없는 자료라면?</summary>
+          <div>
+            <p><strong>AI 없이 기초 초안 만들기</strong>를 누르세요. 앱이 파일과 메모의 사실을 보고서 섹션에 배치합니다. 문장을 풍부하게 새로 쓰지는 않으며, 정보가 없는 곳은 <code>[확인 필요]</code>로 표시합니다.</p>
+          </div>
+        </details>
+      </article>
+
+      <article id="hwp-live" class="section search-block">
+        <p class="section-kicker">한글 작성 방식 선택</p>
+        <h2>기존 문서에 쓸지, 새 파일을 만들지 고르세요</h2>
+        <table class="compare">
+          <thead><tr><th>구분</th><th>열린 한글에 실시간 작성</th><th>새 HWP/HWPX + PDF 만들기</th></tr></thead>
+          <tbody>
+            <tr><td>추천 상황</td><td>이미 작성 중인 문서의 현재 위치부터 이어 쓰기</td><td>완성된 별도 파일을 새로 만들기</td></tr>
+            <tr><td>시작 전</td><td>한글에서 대상 문서를 열고 삽입 위치에 커서를 둠</td><td>저장할 파일명과 위치만 선택</td></tr>
+            <tr><td>안전장치</td><td>현재 문서 저장 후 같은 폴더에 시간표시 백업 생성</td><td>원본 ref를 복사해 작성하므로 기준 파일은 그대로 보존</td></tr>
+            <tr><td>결과</td><td>열린 문서에 문단별로 바로 입력</td><td>HWP 또는 HWPX와 검수용 PDF 동시 생성</td></tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top:26px">실시간 작성은 이렇게 사용합니다</h3>
+        <ol>
+          <li>한글에서 <strong>편집 가능한 문서 하나만</strong> 열고 먼저 저장합니다.</li>
+          <li>내용을 넣을 정확한 위치에 커서를 둡니다.</li>
+          <li>앱에서 <strong>열린 한글에 실시간 작성</strong>을 누르고 확인 창을 읽습니다.</li>
+          <li>입력 속도는 “보통”으로 시작하고, 진행 상황을 한글 화면에서 확인합니다.</li>
+        </ol>
+        <div class="cards-3">
+          <div class="info-card"><h3>일시정지 / 이어쓰기</h3><p class="mini muted">다음 문단을 넣기 전에 멈춥니다. 확인 후 같은 버튼으로 계속합니다.</p></div>
+          <div class="info-card"><h3>입력 종료</h3><p class="mini muted">현재까지 입력된 내용은 남기고 나머지 입력만 중단합니다.</p></div>
+          <div class="info-card"><h3>이번 입력 되돌리기</h3><p class="mini muted">이번 세션이 넣은 범위만 확인해 삭제합니다. 사용자가 범위를 고쳤다면 안전상 자동 삭제를 거부합니다.</p></div>
+        </div>
+        <div class="callout success">
+          <strong>자동 백업 위치</strong>
+          <p>원본 문서와 같은 폴더에 <code>.aT백업_날짜시간</code>이 붙은 파일이 생깁니다. 문제가 있으면 한글을 닫고 이 백업을 열어 비교하세요.</p>
+        </div>
+        <div class="callout warning">
+          <strong>작성 중에는 커서를 옮기거나 직접 타이핑하지 마세요</strong>
+          <p>먼저 일시정지한 뒤 확인하세요. 작성 도중 입력 범위를 편집하면 “이번 입력 되돌리기”가 안전을 위해 실행되지 않을 수 있습니다.</p>
+        </div>
+      </article>
+
+      <article id="quick-tools" class="section search-block">
+        <p class="section-kicker">열린 한글 빠른도구</p>
+        <h2>문단 하나의 서식만 바로 고칠 수도 있습니다</h2>
+        <p class="lead">앱 위쪽의 <strong>열린 한글 빠른도구</strong> 탭은 초안 없이도 사용할 수 있습니다.</p>
+        <div class="cards-2">
+          <div class="info-card">
+            <div class="icon">¶</div>
+            <h3>문단 빠른서식</h3>
+            <p>한글에서 대상 문단에 커서를 둔 뒤 제목, □ 대제목, ○ 소제목, - 본문, · 세부, ※ 참고 중 하나를 누릅니다. 같은 버튼을 다시 눌러도 기호가 중복되지 않습니다.</p>
+          </div>
+          <div class="info-card">
+            <div class="icon">aT</div>
+            <h3>CI · 로고</h3>
+            <p>현재 커서 위치에 aT 표준 CI를 넣거나 다른 이미지 파일을 선택해 삽입합니다. 최종 크기와 배치는 한글에서 확인하세요.</p>
+          </div>
+        </div>
+      </article>
+
+      <article id="troubleshooting" class="section search-block">
+        <p class="section-kicker">막혔을 때</p>
+        <h2>대부분 여기서 바로 해결됩니다</h2>
+        <details open>
+          <summary>“한컴 HWP 자동화: 불가”라고 나옵니다</summary>
+          <div><p>한컴오피스 한글이 설치되어 있는지 확인하고 한글을 한 번 직접 실행한 뒤 앱의 <strong>환경 점검</strong>을 다시 누르세요. 계속 실패하면 Windows와 한컴오피스의 비트 버전, 보안 모듈 등록 상태를 담당자에게 전달하세요.</p></div>
+        </details>
+        <details>
+          <summary>열린 한글 문서를 찾지 못합니다</summary>
+          <div><p>빈 시작 화면이 아니라 실제 HWP/HWPX 파일을 열어 저장한 뒤 본문에 커서를 두세요. 편집 가능한 문서는 하나만 열어 두는 것이 가장 안전합니다.</p></div>
+        </details>
+        <details>
+          <summary>AI 결과를 가져오지 못합니다</summary>
+          <div><p>AI의 답변 전체를 다시 복사하세요. 필수 <code>##</code> 섹션의 이름과 순서가 최초 전달문과 같은지 확인합니다. 답변 앞뒤 설명이나 코드 구분선은 대체로 자동 정리되지만 섹션 누락은 자동으로 만들지 않습니다.</p></div>
+        </details>
+        <details>
+          <summary>“근거에 없는 새 수치” 경고가 나옵니다</summary>
+          <div><p>해당 숫자를 원자료와 대조하세요. 맞는 숫자라면 근거 파일 또는 메모에 사실을 추가하고 다시 가져옵니다. 확인할 수 없다면 숫자를 삭제하거나 <code>[확인 필요]</code>로 바꾸세요.</p></div>
+        </details>
+        <details>
+          <summary>PDF 내용을 읽지 못합니다</summary>
+          <div><p>PDF에서 글자를 드래그해 복사할 수 있는지 확인하세요. 이미지로 스캔된 PDF라면 OCR 처리본, DOCX, TXT 또는 핵심 사실 메모를 사용합니다.</p></div>
+        </details>
+        <details>
+          <summary>글꼴·기호·들여쓰기·굵게가 기준과 다릅니다</summary>
+          <div><p>문서 설정의 한글 서식이 다면/단면 중 올바르게 선택되었는지 확인한 뒤 새 파일을 다시 만드세요. AI 답변의 <code>**부분 굵게**</code> 표식을 지우지 않았는지도 확인합니다. 보도자료는 전용 서식으로 자동 고정됩니다.</p></div>
+        </details>
+        <details>
+          <summary>“이번 입력 되돌리기”가 거부됩니다</summary>
+          <div><p>실시간 입력 이후 해당 범위를 직접 편집한 상태입니다. 자동 삭제로 사용자 수정 내용을 잃지 않도록 중단한 것입니다. 원본과 자동 백업을 비교해 필요한 부분만 한글에서 수동으로 복구하세요.</p></div>
+        </details>
+      </article>
+
+      <article class="section search-block">
+        <p class="section-kicker">알아두면 빠른 기능</p>
+        <h2>자주 쓰는 단축키</h2>
+        <div class="shortcut-grid">
+          <div class="shortcut"><span>근거자료 추가</span><kbd>Ctrl + O</kbd></div>
+          <div class="shortcut"><span>AI에 보낼 내용 준비</span><kbd>Ctrl + Shift + C</kbd></div>
+          <div class="shortcut"><span>AI 결과 붙여넣기</span><kbd>Ctrl + Shift + O</kbd></div>
+          <div class="shortcut"><span>AI 없이 기초 초안</span><kbd>Ctrl + Enter</kbd></div>
+          <div class="shortcut"><span>열린 한글 실시간 작성</span><kbd>Ctrl + Shift + Enter</kbd></div>
+          <div class="shortcut"><span>Markdown 저장</span><kbd>Ctrl + S</kbd></div>
+          <div class="shortcut"><span>환경 점검</span><kbd>F5</kbd></div>
+        </div>
+      </article>
+
+      <article id="final-check" class="section search-block">
+        <p class="section-kicker">제출 직전</p>
+        <h2>마지막 1분 확인</h2>
+        <div class="cards-2">
+          <div class="info-card">
+            <h3>내용</h3>
+            <ul>
+              <li><code>[확인 필요]</code>가 남아 있지 않은가?</li>
+              <li>날짜·금액·인원·비율이 원자료와 같은가?</li>
+              <li>담당부서와 문의처가 실제 정보인가?</li>
+              <li>AI가 사실의 의미를 바꾸지 않았는가?</li>
+            </ul>
+          </div>
+          <div class="info-card">
+            <h3>한글 서식</h3>
+            <ul>
+              <li>다면/단면/보도자료 서식 선택이 맞는가?</li>
+              <li>글머리 기호와 들여쓰기가 ref와 같은가?</li>
+              <li>짧은 라벨만 부분 굵게 처리되었는가?</li>
+              <li>PDF에서 잘림·겹침·빈 페이지가 없는가?</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout success">
+          <strong>기억할 한 문장</strong>
+          <p><strong>AI는 문장을 도와주고, 앱은 구조와 서식을 지키며, 최종 사실 확인은 작성자가 합니다.</strong></p>
+        </div>
+      </article>
+
+      <article class="section search-block">
+        <p class="section-kicker">보안과 개인정보</p>
+        <h2>이 앱이 외부로 보내는 것은 없습니다</h2>
+        <p>AI API, 로그인, API 키 저장, 자동 업로드, 사용 통계 전송 기능이 없습니다. AI 전달문은 클립보드 또는 사용자가 지정한 파일에만 만들어집니다.</p>
+        <div class="callout danger">
+          <strong>복사한 뒤에는 사용자의 선택입니다</strong>
+          <p>외부 AI 대화창에 붙여넣는 순간 해당 서비스의 정책이 적용됩니다. 민감정보는 삭제하거나 비식별화하고, 조직이 허용한 서비스와 자료만 사용하세요.</p>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <strong>aT 보고서 자동화 · 오프라인 수동 AI 버전</strong>
+    <p>검토보고 · 업무계획 · 결과보고 · 회의결과 · 보도자료</p>
+    <p>이 설명서는 인터넷 연결 없이 단독으로 열 수 있습니다.</p>
+  </footer>
+  <button class="to-top" type="button" aria-label="맨 위로" title="맨 위로" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
+
+  <script>
+    (() => {
+      const storageKey = "at-report-guide-checks-v1";
+      const checks = [...document.querySelectorAll(".step-check")];
+      const fill = document.getElementById("progress-fill");
+      const caption = document.getElementById("progress-caption");
+
+      function loadChecks() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+          checks.forEach(box => { box.checked = Boolean(saved[box.dataset.check]); });
+        } catch (_) { /* local file privacy settings may block storage */ }
+      }
+      function updateProgress(save = true) {
+        const done = checks.filter(box => box.checked).length;
+        fill.style.width = `${(done / checks.length) * 100}%`;
+        caption.textContent = done === checks.length ? "준비 완료 · 바로 시작하세요" : `준비 ${done} / ${checks.length}`;
+        if (save) {
+          try {
+            const state = Object.fromEntries(checks.map(box => [box.dataset.check, box.checked]));
+            localStorage.setItem(storageKey, JSON.stringify(state));
+          } catch (_) { /* checklist still works for this page view */ }
+        }
+      }
+      loadChecks();
+      updateProgress(false);
+      checks.forEach(box => box.addEventListener("change", () => updateProgress(true)));
+      document.getElementById("reset-progress").addEventListener("click", () => {
+        checks.forEach(box => { box.checked = false; });
+        updateProgress(true);
+      });
+
+      const search = document.getElementById("guide-search");
+      const blocks = [...document.querySelectorAll(".search-block")];
+      const searchStatus = document.getElementById("search-status");
+      const empty = document.getElementById("search-empty");
+      search.addEventListener("input", () => {
+        const query = search.value.trim().toLocaleLowerCase("ko");
+        let visible = 0;
+        blocks.forEach(block => {
+          const matches = !query || block.textContent.toLocaleLowerCase("ko").includes(query);
+          block.hidden = !matches;
+          if (matches) visible += 1;
+        });
+        empty.style.display = visible ? "none" : "block";
+        searchStatus.textContent = query ? `${visible}개 설명 영역에서 찾았습니다.` : "";
+      });
+
+      const copyButton = document.getElementById("copy-sample");
+      const copyFeedback = document.getElementById("copy-feedback");
+      copyButton.addEventListener("click", async () => {
+        const value = document.getElementById("sample-note").innerText;
+        try {
+          await navigator.clipboard.writeText(value);
+        } catch (_) {
+          const area = document.createElement("textarea");
+          area.value = value;
+          area.style.position = "fixed";
+          area.style.opacity = "0";
+          document.body.appendChild(area);
+          area.select();
+          document.execCommand("copy");
+          area.remove();
+        }
+        copyFeedback.textContent = "복사했습니다. 앱의 메모 칸에 붙여넣으세요.";
+        window.setTimeout(() => { copyFeedback.textContent = ""; }, 3500);
+      });
+    })();
+  </script>
+</body>
+</html>
